@@ -3,18 +3,24 @@ package data;
 public class Map {
     private Block[][] mappa;
 
-    private final int righe;
-    private final int colonne;
+    private final int righe = 30;
+    private final int colonne = 30;
 
     public Map() {
-        this.righe = 10;
-        this.colonne = 10;
         this.mappa = new Block[this.righe][this.colonne];
         for (int i = 0; i < this.righe; i++) {
             for (int j = 0; j < this.colonne; j++) {
                 this.mappa[i][j] = new Block();
             }
         }
+    }
+
+    public int getRighe() {
+        return righe;
+    }
+
+    public int getColonne() {
+        return colonne;
     }
 
     private boolean validCoords(int r, int c) {
@@ -25,24 +31,24 @@ public class Map {
         return this.mappa[r][c].getContenuto() == ' ';
     }
     public void display_on_out() {
-        System.out.println("____________");
         for (Block[] riga : this.mappa) {
-            System.out.print("|");
-
             for (Block blocco : riga) {
                 blocco.display();
             }
-            System.out.println("|");
+            System.out.println();
         }
-        System.out.println("____________");
     }
 
-    public void change_cell(int r, int c) {
+    public void change_cell(int r, int c, char cont) {
         if (!this.validCoords(r, c)) {
             System.out.println("Cordinate non valide");
         } else {
-            this.mappa[r][c] = new Block('A');
+            this.mappa[r][c] = new Block(cont);
         }
+    }
+
+    public void change_cell(int r, int c) {
+        change_cell(r, c, 'A');
     }
 
     private boolean swap(int r, int c) {
@@ -55,7 +61,7 @@ public class Map {
         return false;
     }
 
-    public void insert_at_coords(int r, int c) {
+    public boolean insert_at_coords(int r, int c) {
         if (validCoords(r, c) && isDefaultBolck(r, c)) {
             this.change_cell(r, c);
             if (this.mappa[r][c].isFalls_with_gravity()) {
@@ -63,12 +69,28 @@ public class Map {
                     r += 1;
                 }
             }
-        } else  {
-            System.out.println("Cordinate non valide");
+
+            this.compressColumn(c);
+            return true;
         }
+        return false;
     }
 
     public void insertInCol(int c) {
         insert_at_coords(0, c);
+    }
+
+    private void compressColumn(int c) {
+        int[] columnPressure = new int[this.righe];
+        int sum = 0;
+        for (int r = 0; r < this.righe; r++) {
+            if (this.mappa[r][c].getContenuto() != ' ') {
+                sum += (int)this.mappa[r][c].getContenuto();
+                columnPressure[r] = sum;
+                if (sum >= this.mappa[r][c].getContenuto() * 3) {
+                    this.change_cell(r, c, (char)(this.mappa[r][c].getContenuto() + 1));
+                }
+            }
+        }
     }
 }

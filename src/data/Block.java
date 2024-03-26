@@ -6,7 +6,7 @@ public class Block {
     private boolean fall_through;
 
     public Block(char contenuto) {
-        this.contenuto = contenuto;
+        setContenuto(contenuto);
         this.falls_with_gravity = true;
         this.fall_through = false;
     }
@@ -27,6 +27,14 @@ public class Block {
 
     public char getContenuto() {
         return contenuto;
+    }
+
+    public void setContenuto(char contenuto) {
+        if ((contenuto >= 'A' && contenuto <= 'Z') || contenuto == ' ') {
+            this.contenuto = contenuto;
+        } else {
+            this.contenuto = 'Z';
+        }
     }
 
     public void display() {

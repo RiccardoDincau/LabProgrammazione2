@@ -4,27 +4,20 @@ import data.Map;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         newMap();
     }
 
-    public static void newMap() {
+    public static void newMap() throws InterruptedException {
         Map mappa = new Map();
 
-        for (int i = 0; i < 10; i++) {
-            System.out.print("Enter row: ");
-            Scanner myObj = new Scanner(System.in);
-            int row = myObj.nextInt();
+        int numOfAttempts = (int)(50 + Math.random() * 30);
 
-            System.out.print("Enter column: ");
-            int col = myObj.nextInt();
-
-            System.out.println("Changing: "+row+" - "+col);
+        for (int i = 0; i < numOfAttempts; i++) {
+            mappa.insert_at_coords(0, (int)(Math.random() * mappa.getColonne()));
             mappa.display_on_out();
-            mappa.insert_at_coords(row, col);
-            System.out.println();
-            mappa.display_on_out();
-
+            Thread.sleep(100);
         }
+        mappa.display_on_out();
     }
 }
