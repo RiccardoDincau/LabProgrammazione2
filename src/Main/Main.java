@@ -1,5 +1,6 @@
 package Main;
 
+import UI.MainView;
 import UI.Map;
 import java.util.Scanner;
 
@@ -9,10 +10,11 @@ public class Main {
     }
 
     public static void newMap() {
-        Map mappa = new Map();
+        MainView mappa = new MainView();
 
         mappa.display_on_out();
 
+        /*
         for (int i = 0; i < 10; i++) {
             System.out.print("Enter row: ");
             Scanner myObj = new Scanner(System.in);
@@ -26,5 +28,6 @@ public class Main {
             System.out.println();
             mappa.display_on_out();
         }
+         */
     }
 }

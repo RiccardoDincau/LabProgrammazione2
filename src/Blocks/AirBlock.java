@@ -5,7 +5,7 @@ public class AirBlock extends AbstractBlock{
         this.contenuto = ' ';
         this.falls_with_gravity = false;
         this.fall_through = true;
-        this.blockName = "Air Block";
+        this.blockName = "Air";
     }
 
     public char getContenuto() {

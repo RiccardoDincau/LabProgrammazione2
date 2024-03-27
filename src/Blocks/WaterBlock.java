@@ -5,6 +5,6 @@ public class WaterBlock extends AbstractBlock{
         this.contenuto = 'W';
         this.falls_with_gravity = true;
         this.fall_through = true;
-        this.blockName = "Water Block";
+        this.blockName = "Water";
     }
 }

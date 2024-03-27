@@ -11,9 +11,9 @@ public class Map {
     private final int righe;
     private final int colonne;
 
-    public Map() {
-        this.righe = 10;
-        this.colonne = 10;
+    public Map(int righe, int colonne) {
+        this.righe = righe;
+        this.colonne = colonne;
         this.mappa = new Block[this.righe][this.colonne];
         for (int i = 0; i < this.righe; i++) {
             for (int j = 0; j < this.colonne; j++) {
@@ -32,6 +32,9 @@ public class Map {
     }
     private boolean swap(int r, int c) {
         if (validCoords(r, c) && r < this.righe - 1 && this.mappa[r + 1][c].isFall_through()) {
+            if (this.mappa[r + 1][c].getContenuto() == 'W') {
+                this.mappa[r + 1][c] = new AirBlock();
+            }
             Block temp = this.mappa[r][c];
             this.mappa[r][c] = this.mappa[r + 1][c];
             this.mappa[r+ 1][c] = temp;
