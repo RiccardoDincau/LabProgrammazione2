@@ -25,7 +25,8 @@ public class Map {
         for (int i = 0 ; i < this.RANDOM_BLOCKS_TO_ADD; i++){
             int row = rand.nextInt(this.righe);
             int col = rand.nextInt(this.colonne);
-            this.insert_at_coords(row, col, 'S');
+            this.insert_at_coords(row, col,
+                    (rand.nextInt(2) == 0) ? 'S' : 'I');
         }
 
         this.addRiver();
@@ -64,12 +65,22 @@ public class Map {
         if (!this.validCoords(r, c)) {
             System.out.println("Cordinate non valide");
         } else {
-            if (type == 'S') {
-                this.mappa[r][c] = new SandBlock();
-            } else if (type == 'W') {
-                this.mappa[r][c] = new WaterBlock();
-            } else {
-                System.out.println("Tipo non valido");
+            switch (type) {
+                case 'S': {
+                    this.mappa[r][c] = new SandBlock();
+                    break;
+                }
+                case 'W': {
+                    this.mappa[r][c] = new WaterBlock();
+                    break;
+                }
+                case 'I': {
+                    this.mappa[r][c] = new RawIronBlock();
+                    break;
+                }
+                default: {
+                    System.out.println("Tipo non valido");
+                }
             }
         }
     }
