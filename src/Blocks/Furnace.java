@@ -18,6 +18,5 @@ public class Furnace {
 
     public void setInput(SmeltableBlock inputBlock) {
         this.input = inputBlock;
-        this.smelt();
     }
 }

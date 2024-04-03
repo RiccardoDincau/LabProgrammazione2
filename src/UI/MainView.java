@@ -1,11 +1,12 @@
 package UI;
 
 import Blocks.Furnace;
+import Blocks.SmeltableBlock;
 import Main.Main;
 
 public class MainView {
-    private final int viewRows = 10;
-    private final int viewCols = 30;
+    private final int viewRows = 6;
+    private final int viewCols = 6;
     private Map viewMap;
     private Furnace viewFurnace;
     public MainView() {
@@ -13,11 +14,20 @@ public class MainView {
         this.viewFurnace = new Furnace();
     }
 
-    // TODO
-    // private boolean isBlockSmeltable(int r, int c) {}
+    public void move_into_furnace(int r, int c) {
+        if (this.viewMap.isBlockSmeltable(r, c)) {
+            this.viewFurnace.setInput(this.viewMap.getSmeltableBlock(r, c));
+        } else {
+            System.out.println("Non SmeltableBlock requested for furnace input");
+        }
+    }
     public void display_on_out() {
         this.viewMap.display_on_out();
         this.viewFurnace.display_on_out();
+    }
+
+    public void smelt() {
+        this.viewFurnace.smelt();
     }
 
 

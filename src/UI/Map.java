@@ -1,15 +1,15 @@
 package UI;
 
-import Blocks.AirBlock;
-import Blocks.Block;
-import Blocks.SandBlock;
-import Blocks.WaterBlock;
+import Blocks.*;
+
+import java.util.Random;
 
 public class Map {
     private Block[][] mappa;
 
     private final int righe;
     private final int colonne;
+    private final int RANDOM_BLOCKS_TO_ADD = 10;
 
     public Map(int righe, int colonne) {
         this.righe = righe;
@@ -20,6 +20,14 @@ public class Map {
                 this.mappa[i][j] = new AirBlock();
             }
         }
+
+        Random rand = new Random();
+        for (int i = 0 ; i < this.RANDOM_BLOCKS_TO_ADD; i++){
+            int row = rand.nextInt(this.righe);
+            int col = rand.nextInt(this.colonne);
+            this.insert_at_coords(row, col, 'S');
+        }
+
         this.addRiver();
     }
 
@@ -29,6 +37,16 @@ public class Map {
 
     private boolean isDefaultBolck(int r, int c) {
         return this.mappa[r][c].getContenuto() == ' ';
+    }
+    public boolean isBlockSmeltable(int r, int c) {
+        return this.mappa[r][c].isSmeltable();
+    }
+    public Block getBlock(int r, int c) {return this.mappa[r][c];}
+    public SmeltableBlock getSmeltableBlock(int r, int c) {
+        if (isBlockSmeltable(r, c)) {
+            return (SmeltableBlock) this.mappa[r][c];
+        }
+        return null;
     }
     private boolean swap(int r, int c) {
         if (validCoords(r, c) && r < this.righe - 1 && this.mappa[r + 1][c].isFall_through()) {
