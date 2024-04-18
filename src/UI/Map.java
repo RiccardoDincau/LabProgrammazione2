@@ -1,6 +1,11 @@
 package UI;
 
 import Blocks.*;
+import Blocks.nonSolidBlocks.AirBlock;
+import Blocks.nonSolidBlocks.NullBlock;
+import Blocks.nonSolidBlocks.SandBlock;
+import Blocks.nonSolidBlocks.WaterBlock;
+import Blocks.solidBlocks.RawIronBlock;
 
 import java.util.Random;
 
@@ -32,10 +37,9 @@ public class Map {
         this.addRiver();
     }
 
-    private boolean validCoords(int r, int c) {
+    public boolean validCoords(int r, int c) {
         return (r >= 0 && r < this.righe && c >= 0 && c < this.colonne);
     }
-
     private boolean isDefaultBolck(int r, int c) {
         return this.mappa[r][c].getContenuto() == ' ';
     }
@@ -61,6 +65,7 @@ public class Map {
         }
         return false;
     }
+    // TODO pass a block object not a type
     private void change_cell(int r, int c, char type) {
         if (!this.validCoords(r, c)) {
             System.out.println("Cordinate non valide");
@@ -76,6 +81,10 @@ public class Map {
                 }
                 case 'I': {
                     this.mappa[r][c] = new RawIronBlock();
+                    break;
+                }
+                case ' ': {
+                    this.mappa[r][c] = new AirBlock();
                     break;
                 }
                 default: {
@@ -123,5 +132,16 @@ public class Map {
         for (int i = 0; i < 3; i++) {
             addRowsOfWater();
         }
+    }
+    public Block take_block(int r, int c) {
+        if (this.validCoords(r, c)) {
+            Block temp = this.mappa[r][c];
+            this.set_default(r, c);
+            return temp;
+        }
+        return new NullBlock();
+    }
+    public void set_default(int r, int c) {
+        change_cell(r, c, ' ');
     }
 }

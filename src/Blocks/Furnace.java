@@ -1,5 +1,7 @@
 package Blocks;
 
+import Blocks.nonSolidBlocks.NullBlock;
+
 public class Furnace {
     private SmeltableBlock input;
     private Block output;
@@ -14,6 +16,20 @@ public class Furnace {
     public void smelt() {
         this.output = this.input.smelt();
         this.input = new NullBlock();
+
+    }
+
+    public boolean is_input_empty() {
+        return this.input instanceof NullBlock;
+    }
+    public boolean is_output_empty() {
+        return this.output instanceof NullBlock;
+    }
+
+    public Block getOutput() {
+        Block temp = this.output;
+        this.output = new NullBlock();
+        return temp;
     }
 
     public void setInput(SmeltableBlock inputBlock) {
