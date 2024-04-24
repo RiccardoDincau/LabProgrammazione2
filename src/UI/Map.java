@@ -1,11 +1,6 @@
 package UI;
 
 import Blocks.*;
-import Blocks.nonSolidBlocks.AirBlock;
-import Blocks.nonSolidBlocks.NullBlock;
-import Blocks.nonSolidBlocks.SandBlock;
-import Blocks.nonSolidBlocks.WaterBlock;
-import Blocks.solidBlocks.RawIronBlock;
 
 import java.util.Random;
 
@@ -37,9 +32,10 @@ public class Map {
         this.addRiver();
     }
 
-    public boolean validCoords(int r, int c) {
+    private boolean validCoords(int r, int c) {
         return (r >= 0 && r < this.righe && c >= 0 && c < this.colonne);
     }
+
     private boolean isDefaultBolck(int r, int c) {
         return this.mappa[r][c].getContenuto() == ' ';
     }
@@ -49,9 +45,14 @@ public class Map {
     public Block getBlock(int r, int c) {return this.mappa[r][c];}
     public SmeltableBlock getSmeltableBlock(int r, int c) {
         if (isBlockSmeltable(r, c)) {
-            return (SmeltableBlock) this.mappa[r][c];
+            return (SmeltableBlock) this.remove_block(r, c);
         }
         return null;
+    }
+    public Block remove_block(int r, int c) {
+        Block temp = this.mappa[r][c];
+        this.mappa[r][c] = new AirBlock();
+        return temp;
     }
     private boolean swap(int r, int c) {
         if (validCoords(r, c) && r < this.righe - 1 && this.mappa[r + 1][c].isFall_through()) {
@@ -65,7 +66,6 @@ public class Map {
         }
         return false;
     }
-    // TODO pass a block object not a type
     private void change_cell(int r, int c, char type) {
         if (!this.validCoords(r, c)) {
             System.out.println("Cordinate non valide");
@@ -81,10 +81,6 @@ public class Map {
                 }
                 case 'I': {
                     this.mappa[r][c] = new RawIronBlock();
-                    break;
-                }
-                case ' ': {
-                    this.mappa[r][c] = new AirBlock();
                     break;
                 }
                 default: {
@@ -133,15 +129,11 @@ public class Map {
             addRowsOfWater();
         }
     }
-    public Block take_block(int r, int c) {
-        if (this.validCoords(r, c)) {
-            Block temp = this.mappa[r][c];
-            this.set_default(r, c);
-            return temp;
-        }
-        return new NullBlock();
+    public boolean is_pickable(int r, int c) {
+        return this.mappa[r][c].is_pickable();
     }
-    public void set_default(int r, int c) {
-        change_cell(r, c, ' ');
+
+    public Block gimme_pickable(int r, int c) {
+        return remove_block(r, c);
     }
 }

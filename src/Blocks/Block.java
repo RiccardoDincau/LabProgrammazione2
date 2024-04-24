@@ -6,4 +6,6 @@ public interface Block extends InventoryBlock{
     boolean isFalls_with_gravity();
     boolean isSmeltable();
     char getContenuto();
+    boolean is_pickable();
+
 }
