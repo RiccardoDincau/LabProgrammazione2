@@ -1,6 +1,9 @@
 package UI;
 
+import Blocks.Block;
 import Blocks.Furnace;
+import Blocks.NullBlock;
+import UI.exceptions.*;
 
 public class MainView {
     private final int viewRows = 6;
@@ -15,10 +18,12 @@ public class MainView {
     }
 
     public void move_into_furnace(int r, int c) {
-        if (this.viewMap.isBlockSmeltable(r, c)) {
+        try {
             this.viewFurnace.setInput(this.viewMap.getSmeltableBlock(r, c));
-        } else {
-            System.out.println("Non SmeltableBlock requested for furnace input");
+        } catch (BlockErrorException e) {
+            System.err.println("Non SmeltableBlock requested for furnace input");
+        } catch (FurnaceInputFullException e) {
+            System.err.println("Furnace input full");
         }
     }
     public void display_on_out() {
@@ -28,31 +33,50 @@ public class MainView {
     }
 
     public void smelt() {
-        if (!this.viewFurnace.is_input_empty() && this.viewFurnace.is_output_empty()) {
+        try {
             this.viewFurnace.smelt();
+        } catch (FurnaceInputEmptyException e) {
+            System.err.println("Furnace input is empty");
+        } catch (FurnaceOutputFullException e) {
+            System.err.println("Furnace output is full");
+        }
+
+        try {
             this.inventory.add_block(this.viewFurnace.getOutput());
+        } catch (AddedNullBlockException e) {
+            System.err.println("Tried adding null block to inventory");
         }
     }
 
     public void move_into_furnace_from_inventory(int index) {
-        if (this.viewFurnace.is_input_empty() && this.inventory.is_smeltable(index)) {
+        try {
             this.viewFurnace.setInput(this.inventory.get_smeltable(index));
+        } catch (BlockErrorException e) {
+            System.err.println("Non smeltable block required for furnace input");
+        } catch (FurnaceInputFullException e) {
+            System.err.println("Furnace input full");
         }
     }
 
     public void move_into_inventory_from_furnace() {
-        if (!this.viewFurnace.is_input_empty()) {
+        try {
             this.inventory.add_block(this.viewFurnace.getInput());
+        } catch (AddedNullBlockException e) {
+            System.err.println("Furnace input empty");
         }
     }
     public void pick_up_block(int r, int c) {
-        if (this.viewMap.is_pickable(r, c)) {
+        try {
             this.inventory.add_block(this.viewMap.gimme_pickable(r, c));
+        } catch (BlockErrorException e) {
+            System.err.println("Not pickable block");
+        } catch (AddedNullBlockException e) {
+            System.err.println("Added null block");
         }
     }
 
     public void toggle_inventory_comparator() {
-
+        this.inventory.switch_comparator();
     }
 
 }

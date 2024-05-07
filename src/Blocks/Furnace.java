@@ -1,5 +1,9 @@
 package Blocks;
 
+import UI.exceptions.FurnaceInputEmptyException;
+import UI.exceptions.FurnaceInputFullException;
+import UI.exceptions.FurnaceOutputFullException;
+
 public class Furnace {
     private SmeltableBlock input;
     private Block output;
@@ -11,16 +15,21 @@ public class Furnace {
     public void display_on_out() {
         System.out.println(this.input + " --> " + this.output);
     }
-    public void smelt() {
+    public void smelt() throws FurnaceInputEmptyException, FurnaceOutputFullException {
+        if (!this.is_output_empty()) {
+            throw new FurnaceOutputFullException();
+        }
+        if (this.is_input_empty()) {
+            throw new FurnaceInputEmptyException();
+        }
         this.output = this.input.smelt();
         this.input = new NullBlock();
-
     }
 
-    public boolean is_input_empty() {
+    private boolean is_input_empty() {
         return this.input instanceof NullBlock;
     }
-    public boolean is_output_empty() {
+    private boolean is_output_empty() {
         return this.output instanceof NullBlock;
     }
 
@@ -34,9 +43,11 @@ public class Furnace {
         this.input = new NullBlock();
         return temp;
     }
-    public void setInput(SmeltableBlock inputBlock) {
+    public void setInput(SmeltableBlock inputBlock) throws FurnaceInputFullException{
         if (this.is_input_empty()) {
             this.input = inputBlock;
+        } else {
+            throw new FurnaceInputFullException();
         }
     }
 }

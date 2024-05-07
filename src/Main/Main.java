@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         MainView m = new MainView();
         m.display_on_out();
-        for (int i = 0 ; i < 5 ; i++){
+        for (int i = 0 ; i < 10 ; i++){
             System.out.println("Enter row and then column to pick that block");
             System.out.println("Enter '9' and the item number to move the item to the furnace");
             System.out.println("Enter '99' and then '9' to smelt");

@@ -1,6 +1,6 @@
 package Blocks;
 
-public class SandBlock extends AbstractBlock implements SmeltableBlock {
+public class SandBlock extends AbstractBlock implements SmeltableBlock, DestroyedOnTorch {
     public SandBlock() {
         super();
         this.contenuto = 'S';
@@ -10,7 +10,6 @@ public class SandBlock extends AbstractBlock implements SmeltableBlock {
         this.isSmeltable = true;
         this.pickable = true;
     }
-
     public Block smelt() {
         return new GlassBlock();
     }
